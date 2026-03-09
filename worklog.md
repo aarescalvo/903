@@ -1087,3 +1087,40 @@ Módulo para generar la Planilla 01 de SENASA para registro de ingreso de hacien
 - Build: Compilando correctamente
 
 
+
+---
+Task ID: 22
+Agent: main
+Task: Corregir errores reportados por usuario (hidratación y campos faltantes)
+
+## 🔧 ERRORES CORREGIDOS
+
+### 1. Error de Hidratación en Operadores
+**Problema:** `<button>` no puede ser descendiente de `<button>` - Switch dentro de Button
+**Solución:** Separar Switch del Button, usar onCheckedChange directamente
+**Archivo:** `src/components/configuracion/operadores.tsx`
+
+### 2. Clientes sin Campos de Facturación
+**Problema:** Faltaban campos: DNI, contacto alternativo, datos de facturación
+**Solución:** Agregar campos completos al formulario y API
+
+**Nuevos campos en Cliente:**
+- DNI
+- Localidad, Provincia, Código Postal
+- Contacto Alternativo
+- Condición Fiscal
+- Razón Social para Facturación
+- Domicilio para Facturación
+- CUIT para Facturación
+- Inicio de Actividades
+- Número de Matrícula (para matarifes)
+
+**Archivos modificados:**
+- `src/components/configuracion/clientes.tsx` - Formulario completo
+- `src/app/api/clientes/route.ts` - API actualizada
+- `prisma/schema.prisma` - Modelo Cliente expandido
+
+## ✅ VERIFICACIÓN
+- ESLint: Sin errores
+- Prisma DB Push: Completado
+- Dev Server: Funcionando

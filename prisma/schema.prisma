@@ -209,12 +209,33 @@ enum RolOperador {
 model Cliente {
   id              String   @id @default(cuid())
   nombre          String
+  
+  // Identificación
+  dni             String?
   cuit            String?  @unique
+  
+  // Contacto
   direccion       String?
+  localidad       String?
+  provincia       String?
+  codigoPostal    String?
   telefono        String?
+  contactoAlternativo String?  // Otro número de contacto
   email           String?
+  
+  // Datos de facturación
+  condicionFiscal String?      // RESPONSABLE_INSCRIPTO, MONOTRIBUTO, CONSUMIDOR_FINAL, EXENTO
+  razonSocialFacturacion String?  // Si es diferente al nombre
+  domicilioFacturacion   String?  // Si es diferente a la dirección
+  cuitFacturacion        String?  // Si es diferente al CUIT
+  inicioActividades      DateTime? // Fecha de inicio de actividades
+  
+  // Tipos de cliente
   esProductor     Boolean  @default(false)
   esUsuarioFaena  Boolean  @default(false)
+  
+  // Número de matrícula (para usuarios de faena/matarifes)
+  numeroMatricula String?
   
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

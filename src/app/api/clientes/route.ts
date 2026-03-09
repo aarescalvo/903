@@ -36,7 +36,13 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { nombre, cuit, direccion, telefono, email, esProductor, esUsuarioFaena } = body
+    const { 
+      nombre, dni, cuit, 
+      direccion, localidad, provincia, codigoPostal,
+      telefono, contactoAlternativo, email,
+      condicionFiscal, razonSocialFacturacion, domicilioFacturacion, cuitFacturacion, inicioActividades,
+      esProductor, esUsuarioFaena, numeroMatricula 
+    } = body
     
     if (!nombre) {
       return NextResponse.json(
@@ -48,12 +54,23 @@ export async function POST(request: NextRequest) {
     const cliente = await db.cliente.create({
       data: {
         nombre,
+        dni: dni || null,
         cuit: cuit || null,
         direccion: direccion || null,
+        localidad: localidad || null,
+        provincia: provincia || null,
+        codigoPostal: codigoPostal || null,
         telefono: telefono || null,
+        contactoAlternativo: contactoAlternativo || null,
         email: email || null,
+        condicionFiscal: condicionFiscal || null,
+        razonSocialFacturacion: razonSocialFacturacion || null,
+        domicilioFacturacion: domicilioFacturacion || null,
+        cuitFacturacion: cuitFacturacion || null,
+        inicioActividades: inicioActividades ? new Date(inicioActividades) : null,
         esProductor: esProductor || false,
-        esUsuarioFaena: esUsuarioFaena || false
+        esUsuarioFaena: esUsuarioFaena || false,
+        numeroMatricula: numeroMatricula || null
       }
     })
     
@@ -74,7 +91,14 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json()
-    const { id, nombre, cuit, direccion, telefono, email, esProductor, esUsuarioFaena } = body
+    const { 
+      id, nombre, dni, cuit, 
+      direccion, localidad, provincia, codigoPostal,
+      telefono, contactoAlternativo, email,
+      condicionFiscal, razonSocialFacturacion, domicilioFacturacion, cuitFacturacion, inicioActividades,
+      esProductor, esUsuarioFaena, numeroMatricula,
+      activo // For toggling active status
+    } = body
     
     if (!id) {
       return NextResponse.json(
@@ -83,16 +107,39 @@ export async function PUT(request: NextRequest) {
       )
     }
     
+    // If only updating activo status (toggle)
+    if (activo !== undefined && Object.keys(body).length === 2) {
+      const cliente = await db.cliente.update({
+        where: { id },
+        data: { activo }
+      })
+      return NextResponse.json({
+        success: true,
+        data: cliente
+      })
+    }
+    
     const cliente = await db.cliente.update({
       where: { id },
       data: {
         nombre,
+        dni: dni || null,
         cuit: cuit || null,
         direccion: direccion || null,
+        localidad: localidad || null,
+        provincia: provincia || null,
+        codigoPostal: codigoPostal || null,
         telefono: telefono || null,
+        contactoAlternativo: contactoAlternativo || null,
         email: email || null,
+        condicionFiscal: condicionFiscal || null,
+        razonSocialFacturacion: razonSocialFacturacion || null,
+        domicilioFacturacion: domicilioFacturacion || null,
+        cuitFacturacion: cuitFacturacion || null,
+        inicioActividades: inicioActividades ? new Date(inicioActividades) : null,
         esProductor: esProductor || false,
-        esUsuarioFaena: esUsuarioFaena || false
+        esUsuarioFaena: esUsuarioFaena || false,
+        numeroMatricula: numeroMatricula || null
       }
     })
     

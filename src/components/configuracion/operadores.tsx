@@ -349,28 +349,32 @@ export function Operadores({ operador }: { operador: Operador }) {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-2">
                         <Button 
                           variant="ghost" 
                           size="icon"
                           onClick={() => handleEditar(op)}
+                          title="Editar"
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="icon"
-                          onClick={() => handleToggleActivo(op)}
-                          disabled={op.id === operador.id}
-                        >
-                          <Switch checked={op.activo} />
-                        </Button>
+                        <div className="flex items-center gap-1">
+                          <Switch 
+                            checked={op.activo} 
+                            onCheckedChange={() => handleToggleActivo(op)}
+                            disabled={op.id === operador.id}
+                          />
+                          <span className="text-xs text-stone-500">
+                            {op.activo ? 'Activo' : 'Inactivo'}
+                          </span>
+                        </div>
                         <Button 
                           variant="ghost" 
                           size="icon"
                           onClick={() => handleEliminar(op)}
                           className="text-red-500 hover:text-red-700"
                           disabled={op.id === operador.id}
+                          title="Eliminar"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
