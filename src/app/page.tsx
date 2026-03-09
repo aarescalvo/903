@@ -37,6 +37,7 @@ import { CCIRModule } from '@/components/cumplimiento-regulatorio/ccir'
 import { AuditoriaModule } from '@/components/auditoria-module'
 import { CumplimientoRegulatorioModule } from '@/components/cumplimiento-regulatorio'
 import { Planilla01Module } from '@/components/planilla-01'
+import { UsuariosFaenaModule } from '@/components/configuracion/usuarios-faena'
 
 // Placeholder module
 import { PlaceholderModule } from '@/components/placeholders/placeholder-module'
@@ -639,7 +640,7 @@ export default function FrigorificoApp() {
       case 'configInsumos':
         return <PlaceholderModule title="Config. Insumos" description="Configuración de insumos" icon={<Box className="w-16 h-16" />} />
       case 'configUsuarios':
-        return <PlaceholderModule title="Config. Usuarios" description="Configuración de usuarios" icon={<Users className="w-16 h-16" />} />
+        return <UsuariosFaenaModule operador={operador} />
       case 'codigoBarras':
         return <PlaceholderModule title="Código de Barras" description="Configuración de códigos de barras" icon={<Barcode className="w-16 h-16" />} />
       case 'impresoras':
