@@ -40,7 +40,10 @@ SCOPES = ['https://www.googleapis.com/auth/drive.file']
 BACKUP_DIR = Path(__file__).parent.parent / 'backups'
 CREDENTIALS_FILE = Path(__file__).parent / 'credentials.json'
 TOKEN_FILE = Path(__file__).parent / 'token.json'
-FOLDER_NAME = 'Solemar_Backups'
+
+# ID de la carpeta de Google Drive (ya creada)
+# https://drive.google.com/drive/folders/1PvCRIW5jiHKBg-xJLeVhZI9E7YqxFepF
+FOLDER_ID = '1PvCRIW5jiHKBg-xJLeVhZI9E7YqxFepF'
 
 def get_credentials():
     """Obtiene las credenciales de Google Drive."""
@@ -82,24 +85,6 @@ def get_credentials():
             token.write(creds.to_json())
     
     return creds
-
-def get_or_create_folder(service, folder_name):
-    """Obtiene o crea la carpeta de backups en Google Drive."""
-    # Buscar carpeta existente
-    query = f"name='{folder_name}' and mimeType='application/vnd.google-apps.folder' and trashed=false"
-    results = service.files().list(q=query, spaces='drive', fields='files(id, name)').execute()
-    folders = results.get('files', [])
-    
-    if folders:
-        return folders[0]['id']
-    
-    # Crear carpeta nueva
-    folder_metadata = {
-        'name': folder_name,
-        'mimeType': 'application/vnd.google-apps.folder'
-    }
-    folder = service.files().create(body=folder_metadata, fields='id').execute()
-    return folder.get('id')
 
 def upload_file(service, file_path, folder_id):
     """Sube un archivo a Google Drive."""
@@ -165,13 +150,12 @@ def main():
     # Crear servicio
     service = build('drive', 'v3', credentials=creds)
     
-    # Obtener/crear carpeta
-    print("📁 Verificando carpeta de backups...")
-    folder_id = get_or_create_folder(service, FOLDER_NAME)
+    # Usar la carpeta existente
+    print(f"📁 Usando carpeta: Solemar_Backups")
     
     # Subir archivo
     print()
-    result = upload_file(service, file_path, folder_id)
+    result = upload_file(service, file_path, FOLDER_ID)
     
     print()
     print("=" * 50)
@@ -179,8 +163,7 @@ def main():
     print("=" * 50)
     print()
     print(f"📄 Archivo: {result['name']}")
-    print(f"📂 Carpeta: {FOLDER_NAME}")
-    print(f"🔗 Ver en: https://drive.google.com/drive/folders/{folder_id}")
+    print(f"🔗 Ver en: https://drive.google.com/drive/folders/{FOLDER_ID}")
     print()
 
 if __name__ == '__main__':
