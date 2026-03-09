@@ -1,13 +1,23 @@
 # 📋 ESTADO DEL PROYECTO - SOLEMAR ALIMENTARIA
 
 > **⚠️ CRÍTICO**: Este archivo debe actualizarse al final de CADA sesión de trabajo.
-> **Última actualización**: 2026-03-04 (sesión actual)
+> **Última actualización**: 2026-03-09
+
+---
+
+## 🔗 REPOSITORIOS Y BACKUPS
+
+| Tipo | URL | Estado |
+|------|-----|--------|
+| **GitHub** | https://github.com/aarescalvo/903 | ✅ Actualizado |
+| **Google Drive** | https://drive.google.com/drive/folders/1PvCRIW5jiHKBg-xJLeVhZI9E7YqxFepF | ✅ Configurado |
+| **Backup Local** | `/home/z/my-project/backups/` | ✅ Activo |
 
 ---
 
 ## 🔒 LO QUE YA ESTÁ HECHO (NO TOCAR SIN CONFIRMAR)
 
-### ✅ Módulos Completos y Probados
+### ✅ Módulos Completos y Probados (26 módulos)
 
 | # | Módulo | Archivo Frontend | Archivo API | Estado |
 |---|--------|------------------|-------------|--------|
@@ -92,27 +102,37 @@ El menú tiene **8 secciones** con los siguientes módulos:
 
 ---
 
-## ⚠️ ERRORES CONOCIDOS Y CORREGIDOS
+## 📝 CAMBIOS RECIENTES (últimas 3 sesiones)
 
-### Fecha: 2026-03-04
+### Sesión: 2026-03-09 (actual)
+**Cambios:**
+1. Creado sistema de backup para Google Drive
+   - Script `scripts/backup.sh` para crear backup comprimido
+   - Script `scripts/upload_gdrive.py` para subir automáticamente
+   - Carpeta Google Drive configurada
+2. Subido proyecto a GitHub nuevo repositorio
+3. Creado archivo ESTADO_PROYECTO.md para tracking
 
-| Error | Solución | Archivo |
-|-------|----------|---------|
-| Switch dentro de Button (hidratación) | Separar Switch de Button | `configuracion/operadores.tsx` |
-| Clientes sin campos de facturación | Agregar DNI, contacto, datos facturación | `configuracion/clientes.tsx`, `prisma/schema.prisma` |
+**Archivos creados:**
+- `scripts/backup.sh`
+- `scripts/upload_gdrive.py`
+- `scripts/README_BACKUP.md`
+- `ESTADO_PROYECTO.md`
+
+**Commits:**
+- `9206ac7` feat: Configure Google Drive backup with user's folder ID
+- `1853b31` feat: Add Google Drive backup system
 
 ---
 
-## 📝 CAMBIOS RECIENTES (últimas 3 sesiones)
-
-### Sesión: 2026-03-04 (actual)
+### Sesión: 2026-03-04
 **Cambios:**
 1. Corregido error de hidratación en Operadores (Switch dentro de Button)
 2. Agregados campos a Clientes/Usuarios Faena:
    - DNI
    - Localidad, Provincia, Código Postal
    - Contacto alternativo
-   - Datos de facturación (condición fiscal, razón social, domicilio, CUIT facturación, inicio actividades)
+   - Datos de facturación completos
    - Número de matrícula (para matarifes)
 3. Actualizado schema Prisma con nuevos campos en modelo Cliente
 
@@ -122,13 +142,25 @@ El menú tiene **8 secciones** con los siguientes módulos:
 - `src/app/api/clientes/route.ts`
 - `prisma/schema.prisma`
 
+**Commit:** `b8c0d61` fix: Hydration error in Operadores, add complete client fields
+
+---
+
+## ⚠️ ERRORES CONOCIDOS Y CORREGIDOS
+
+| Fecha | Error | Solución | Archivo |
+|-------|-------|----------|---------|
+| 2026-03-09 | Sin backup automático | Creado sistema de backup | `scripts/backup.sh` |
+| 2026-03-04 | Switch dentro de Button (hidratación) | Separar Switch de Button | `configuracion/operadores.tsx` |
+| 2026-03-04 | Clientes sin campos de facturación | Agregar campos completos | `configuracion/clientes.tsx` |
+
 ---
 
 ## 🚧 PENDIENTES
 
 ### Alta Prioridad
+- [ ] Configurar credenciales Google Drive API en máquina local
 - [ ] Probar módulo Clientes con nuevos campos
-- [ ] Verificar que no haya otros errores de hidratación
 
 ### Media Prioridad
 - [ ] Implementar impresión real de rótulos (Datamax/Zebra)
@@ -136,7 +168,7 @@ El menú tiene **8 secciones** con los siguientes módulos:
 - [ ] Dashboard con gráficos
 
 ### Baja Prioridad
-- [ ] Backup automático de datos
+- [ ] Backup automático programado (cron)
 - [ ] Búsqueda global
 
 ---
@@ -157,8 +189,49 @@ El menú tiene **8 secciones** con los siguientes módulos:
 
 ---
 
-## 🔗 REPOSITORIO GITHUB
+## 📋 RUTINA DE CADA SESIÓN
 
-- **URL**: https://github.com/aarescalvo/localzai
-- **Último commit**: b4f1adb
-- **Mensaje**: "feat: Separate Usuarios (matarifes) from Operadores (system users)"
+### Al EMPEZAR:
+```
+1. Leer ESTADO_PROYECTO.md ← ESTE ARCHIVO
+2. Leer FLUJOS.md (para entender el negocio)
+3. Ver el último commit: git log --oneline -5
+4. Ver estado: git status
+```
+
+### Al TERMINAR:
+```
+1. Actualizar ESTADO_PROYECTO.md con lo hecho
+2. Actualizar worklog.md
+3. git add -A && git commit -m "mensaje descriptivo"
+4. git push origin master
+5. bash scripts/backup.sh (crear backup)
+```
+
+### Antes de CAMBIOS GRANDES:
+```
+1. CONFIRMAR con el usuario
+2. Verificar que no afecte otros módulos
+3. Crear backup antes de cambios críticos
+```
+
+---
+
+## 🔧 COMANDOS ÚTILES
+
+```bash
+# Backup
+bash scripts/backup.sh                    # Crear backup
+python3 scripts/upload_gdrive.py          # Subir a Google Drive
+
+# Git
+git status                                # Ver cambios
+git log --oneline -5                      # Últimos commits
+git add -A && git commit -m "mensaje"     # Commit
+git push origin master                    # Subir a GitHub
+
+# Desarrollo
+bun run dev                               # Iniciar servidor
+bun run lint                              # Verificar código
+bun run db:push                           # Actualizar base de datos
+```
