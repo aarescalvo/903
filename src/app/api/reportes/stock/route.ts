@@ -13,8 +13,8 @@ export async function GET(request: NextRequest) {
       where: { activo: true },
       orderBy: { nombre: 'asc' },
       include: {
-        stockMedias: true,
-        mediasRes: {
+        StockMediaRes: true,
+        MediaRes: {
           where: { estado: 'EN_CAMARA' },
           include: {
             romaneo: {
@@ -38,11 +38,11 @@ export async function GET(request: NextRequest) {
     // Calcular stock por cámara
     const stockPorCamara = camarasFiltradas.map(camara => {
       // Filtrar por especie si se especifica
-      let mediasFiltradas = camara.mediasRes
+      let mediasFiltradas = camara.MediaRes
       if (especie) {
-        mediasFiltradas = camara.mediasRes.filter(m => {
+        mediasFiltradas = camara.MediaRes.filter(m => {
           // Obtener especie del stockMedias relacionado
-          const stockMedia = camara.stockMedias.find(s => s.especie === especie)
+          const stockMedia = camara.StockMediaRes.find(s => s.especie === especie)
           return stockMedia !== undefined
         })
       }
@@ -148,7 +148,7 @@ export async function GET(request: NextRequest) {
     }
 
     camarasFiltradas.forEach(camara => {
-      camara.stockMedias.forEach(stock => {
+      camara.StockMediaRes.forEach(stock => {
         if (!stockPorEspecie[stock.especie]) {
           stockPorEspecie[stock.especie] = { cantidad: 0, peso: 0 }
         }

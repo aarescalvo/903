@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     // Get tropa
     const tropa = await db.tropa.findUnique({
       where: { id: tropaId },
-      include: { animales: true }
+      include: { Animal: true }
     })
 
     if (!tropa) {
@@ -30,14 +30,14 @@ export async function POST(request: NextRequest) {
     // Update tropa corral
     await db.tropa.update({
       where: { id: tropaId },
-      data: { corral: corralDestino }
+      data: { corralId: corralDestino }
     })
 
     // Update all animals corral
-    if (tropa.animales.length > 0) {
+    if (tropa.Animal.length > 0) {
       await db.animal.updateMany({
         where: { tropaId },
-        data: { corral: corralDestino }
+        data: { corralId: corralDestino }
       })
     }
 
@@ -49,13 +49,13 @@ export async function POST(request: NextRequest) {
         accion: 'UPDATE',
         entidad: 'Tropa',
         entidadId: tropaId,
-        descripcion: `Tropa ${tropa.codigo} movida de ${tropa.corral || 'sin corral'} a ${corralDestino}`
+        descripcion: `Tropa ${tropa.codigo} movida de ${tropa.corralId || 'sin corral'} a ${corralDestino}`
       }
     })
 
     return NextResponse.json({
       success: true,
-      data: { codigo: tropa.codigo, corralAnterior: tropa.corral, corralDestino }
+      data: { codigo: tropa.codigo, corralAnterior: tropa.corralId, corralDestino }
     })
   } catch (error) {
     console.error('Error moving tropa:', error)

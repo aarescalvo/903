@@ -34,9 +34,9 @@ export async function GET(request: NextRequest) {
     const tropas = await db.tropa.findMany({
       where: tropaCodigo ? { codigo: tropaCodigo } : {},
       include: {
-        animales: {
+        Animal: {
           include: {
-            pesajeIndividual: true
+            PesajeIndividual: true
           }
         }
       }

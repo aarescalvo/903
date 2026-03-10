@@ -121,7 +121,8 @@ export async function POST(request: NextRequest) {
         precio: precio ? parseFloat(precio) : null,
         temperaturaConservacion,
         apareceRendimiento: apareceRendimiento || false,
-        apareceStock: apareceStock || false
+        apareceStock: apareceStock || false,
+        updatedAt: new Date()
       }
     })
 

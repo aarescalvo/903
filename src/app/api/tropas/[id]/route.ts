@@ -12,16 +12,16 @@ export async function GET(
     const tropa = await db.tropa.findUnique({
       where: { id },
       include: {
-        productor: true,
-        usuarioFaena: true,
-        corral: true,
-        tiposAnimales: true,
-        pesajeCamion: {
+        Cliente_Tropa_productorIdToCliente: true,
+        Cliente_Tropa_usuarioFaenaIdToCliente: true,
+        Corral: true,
+        TropaAnimalCantidad: true,
+        PesajeCamion: {
           include: {
-            transportista: true
+            Transportista: true
           }
         },
-        animales: {
+        Animal: {
           orderBy: { numero: 'asc' }
         }
       }
@@ -38,15 +38,15 @@ export async function GET(
       success: true,
       data: {
         ...tropa,
-        pesajeCamion: tropa.pesajeCamion ? {
-          patenteChasis: tropa.pesajeCamion.patenteChasis,
-          patenteAcoplado: tropa.pesajeCamion.patenteAcoplado,
-          choferNombre: tropa.pesajeCamion.choferNombre,
-          choferDni: tropa.pesajeCamion.choferDni,
-          precintos: tropa.pesajeCamion.precintos,
-          transportista: tropa.pesajeCamion.transportista
+        pesajeCamion: tropa.PesajeCamion ? {
+          patenteChasis: tropa.PesajeCamion.patenteChasis,
+          patenteAcoplado: tropa.PesajeCamion.patenteAcoplado,
+          choferNombre: tropa.PesajeCamion.choferNombre,
+          choferDni: tropa.PesajeCamion.choferDni,
+          precintos: tropa.PesajeCamion.precintos,
+          transportista: tropa.PesajeCamion.Transportista
         } : null,
-        animales: tropa.animales.map(a => ({
+        animales: tropa.Animal.map(a => ({
           id: a.id,
           numero: a.numero,
           codigo: a.codigo,
@@ -55,7 +55,7 @@ export async function GET(
           raza: a.raza,
           pesoVivo: a.pesoVivo,
           estado: a.estado,
-          corral: a.corral,
+          corralId: a.corralId,
           fechaBaja: a.fechaBaja,
           motivoBaja: a.motivoBaja
         }))

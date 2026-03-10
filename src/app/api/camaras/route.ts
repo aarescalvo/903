@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
       orderBy: { nombre: 'asc' },
       include: {
         _count: {
-          select: { stockMedias: true, mediasRes: true }
+          select: { StockMediaRes: true, MediaRes: true }
         }
       }
     })
@@ -20,8 +20,8 @@ export async function GET(request: NextRequest) {
       capacidad: camara.capacidad,
       observaciones: camara.observaciones,
       activo: camara.activo,
-      stockGanchos: camara._count.mediasRes,
-      stockItems: camara._count.stockMedias
+      stockGanchos: camara._count.MediaRes,
+      stockItems: camara._count.StockMediaRes
     }))
     
     return NextResponse.json({
@@ -67,7 +67,8 @@ export async function POST(request: NextRequest) {
         nombre,
         tipo: tipo || 'FAENA',
         capacidad: parseInt(capacidad) || 0,
-        observaciones: observaciones || null
+        observaciones: observaciones || null,
+        updatedAt: new Date()
       }
     })
     

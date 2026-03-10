@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     const corrales = await db.corral.findMany({
       orderBy: { nombre: 'asc' },
       include: {
-        tropas: {
+        Tropa: {
           where: {
             estado: { in: ['RECIBIDO', 'EN_CORRAL', 'EN_PESAJE', 'PESADO', 'LISTO_FAENA'] }
           },
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     
     // Calcular stock actual por corral
     const corralesConStock = corrales.map(corral => {
-      const tropasActivas = corral.tropas
+      const tropasActivas = corral.Tropa
       const stockBovinos = tropasActivas
         .filter(t => t.especie === 'BOVINO')
         .reduce((acc, t) => acc + t.cantidadCabezas, 0)
@@ -40,10 +40,7 @@ export async function GET(request: NextRequest) {
         activo: corral.activo,
         stockBovinos,
         stockEquinos,
-        stockTotal: stockBovinos + stockEquinos,
-        disponible: corral.capacidad - stockBovinos - stockEquinos,
-        tropasActivas: tropasActivas.length,
-        tropas: tropasActivas
+        disponibilidad: corral.capacidad - stockBovinos - stockEquinos
       }
     })
     
@@ -89,7 +86,8 @@ export async function POST(request: NextRequest) {
       data: {
         nombre,
         capacidad: parseInt(capacidad) || 0,
-        observaciones: observaciones || null
+        observaciones: observaciones || null,
+        updatedAt: new Date()
       }
     })
     
@@ -112,12 +110,20 @@ export async function PUT(request: NextRequest) {
     const body = await request.json()
     const { id, nombre, capacidad, observaciones, activo } = body
     
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: 'ID es requerido' },
+        { status: 400 }
+      )
+    }
+    
     const updateData: Record<string, unknown> = {}
     
     if (nombre !== undefined) updateData.nombre = nombre
     if (capacidad !== undefined) updateData.capacidad = parseInt(capacidad) || 0
     if (observaciones !== undefined) updateData.observaciones = observaciones || null
     if (activo !== undefined) updateData.activo = activo
+    updateData.updatedAt = new Date()
     
     const corral = await db.corral.update({
       where: { id },

@@ -60,8 +60,8 @@ export async function GET(request: NextRequest) {
         pesoNeto: { not: null }
       },
       include: {
-        productor: true,
-        animales: {
+        Cliente_Tropa_productorIdToCliente: true,
+        Animal: {
           where: { pesoVivo: { not: null } },
           select: { pesoVivo: true }
         }
@@ -72,12 +72,12 @@ export async function GET(request: NextRequest) {
 
     const rendimientos = tropasConRomaneo.map(tropa => {
       const pesoVivoTotal = tropa.pesoNeto || tropa.pesoTotalIndividual || 0
-      const pesoMediaTotal = tropa.animales?.reduce((acc, a) => acc + (a.pesoVivo || 0), 0) || pesoVivoTotal * 0.2
+      const pesoMediaTotal = tropa.Animal?.reduce((acc, a) => acc + (a.pesoVivo || 0), 0) || pesoVivoTotal * 0.2
       const rinde = pesoMediaTotal > 0 && pesoVivoTotal > 0 ? (pesoMediaTotal / pesoVivoTotal) * 100 : 0
 
       return {
         tropaCodigo: tropa.codigo,
-        productor: tropa.productor,
+        productor: tropa.Cliente_Tropa_productorIdToCliente,
         cantidad: tropa.cantidadCabezas,
         pesoVivoTotal,
         pesoMediaTotal,

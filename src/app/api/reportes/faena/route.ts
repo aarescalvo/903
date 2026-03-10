@@ -23,9 +23,9 @@ export async function GET(request: NextRequest) {
       },
       include: {
         tipificador: { select: { nombre: true, apellido: true, matricula: true } },
-        mediasRes: {
+        MediaRes: {
           include: {
-            camara: { select: { nombre: true } }
+            Camara: { select: { nombre: true } }
           }
         }
       },
@@ -41,24 +41,24 @@ export async function GET(request: NextRequest) {
         }
       },
       include: {
-        tropas: {
+        ListaFaenaTropa: {
           include: {
-            tropa: {
+            Tropa: {
               include: {
-                productor: { select: { nombre: true } },
-                usuarioFaena: { select: { nombre: true } }
+                Cliente_Tropa_productorIdToCliente: { select: { nombre: true } },
+                Cliente_Tropa_usuarioFaenaIdToCliente: { select: { nombre: true } }
               }
             }
           }
         },
-        asignaciones: {
+        AsignacionGarron: {
           include: {
-            animal: {
+            Animal: {
               include: {
-                tropa: {
+                Tropa: {
                   include: {
-                    productor: { select: { nombre: true } },
-                    usuarioFaena: { select: { nombre: true } }
+                    Cliente_Tropa_productorIdToCliente: { select: { nombre: true } },
+                    Cliente_Tropa_usuarioFaenaIdToCliente: { select: { nombre: true } }
                   }
                 }
               }
@@ -98,13 +98,13 @@ export async function GET(request: NextRequest) {
     })
 
     // Detalle de medias reses
-    const medias = romaneos.flatMap(r => r.mediasRes.map(m => ({
+    const medias = romaneos.flatMap(r => r.MediaRes.map(m => ({
       garron: r.garron,
       tropaCodigo: r.tropaCodigo,
       lado: m.lado,
       peso: m.peso,
       sigla: m.sigla,
-      camara: m.camara?.nombre
+      camara: m.Camara?.nombre
     })))
 
     // Estadísticas de medias
@@ -146,18 +146,18 @@ export async function GET(request: NextRequest) {
           denticion: r.denticion,
           tipificador: r.tipificador ? `${r.tipificador.nombre} ${r.tipificador.apellido}` : null,
           estado: r.estado,
-          medias: r.mediasRes.length
+          medias: r.MediaRes.length
         })),
         listaFaena: listaFaena ? {
           id: listaFaena.id,
           fecha: listaFaena.fecha.toISOString(),
           estado: listaFaena.estado,
           cantidadTotal: listaFaena.cantidadTotal,
-          tropas: listaFaena.tropas.map(t => ({
-            tropaCodigo: t.tropa.codigo,
+          tropas: listaFaena.ListaFaenaTropa.map(t => ({
+            tropaCodigo: t.Tropa.codigo,
             cantidad: t.cantidad,
-            productor: t.tropa.productor?.nombre,
-            usuarioFaena: t.tropa.usuarioFaena?.nombre
+            productor: t.Tropa.Cliente_Tropa_productorIdToCliente?.nombre,
+            usuarioFaena: t.Tropa.Cliente_Tropa_usuarioFaenaIdToCliente?.nombre
           }))
         } : null
       }

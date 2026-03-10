@@ -69,7 +69,8 @@ export async function POST(request: NextRequest) {
         nombre,
         apellido,
         numero,
-        matricula
+        matricula,
+        updatedAt: new Date()
       }
     })
 
@@ -102,6 +103,7 @@ export async function PUT(request: NextRequest) {
     if (numero !== undefined) updateData.numero = numero
     if (matricula !== undefined) updateData.matricula = matricula
     if (activo !== undefined) updateData.activo = activo
+    updateData.updatedAt = new Date()
 
     const tipificador = await db.tipificador.update({
       where: { id },

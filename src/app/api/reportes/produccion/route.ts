@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
         }
       },
       include: {
-        mediasRes: true
+        MediaRes: true
       },
       orderBy: { fecha: 'asc' }
     })
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Producción de medias reses
-    const totalMedias = romaneos.reduce((acc, r) => acc + r.mediasRes.length, 0)
+    const totalMedias = romaneos.reduce((acc, r) => acc + r.MediaRes.length, 0)
     const pesoTotalMedias = romaneos.reduce((acc, r) => acc + (r.pesoTotal || 0), 0)
     
     // Producción por fecha
@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
         produccionPorFecha[fecha] = { animales: 0, medias: 0, pesoCanal: 0, menudencias: 0, pesoMenudencias: 0 }
       }
       produccionPorFecha[fecha].animales++
-      produccionPorFecha[fecha].medias += r.mediasRes.length
+      produccionPorFecha[fecha].medias += r.MediaRes.length
       produccionPorFecha[fecha].pesoCanal += r.pesoTotal || 0
     })
 
@@ -161,7 +161,7 @@ export async function GET(request: NextRequest) {
           fecha: r.fecha.toISOString(),
           tropaCodigo: r.tropaCodigo,
           pesoTotal: r.pesoTotal,
-          medias: r.mediasRes.length
+          medias: r.MediaRes.length
         })),
         detalleMenudencias: menudencias.slice(0, 100).map(m => ({
           id: m.id,
