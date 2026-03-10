@@ -14,7 +14,8 @@ import { Clientes } from './clientes'
 interface Operador {
   id: string
   nombre: string
-  nivel: string
+  usuario?: string
+  rol?: string
 }
 
 export function ConfiguracionModule({ operador }: { operador: Operador }) {

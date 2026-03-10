@@ -77,7 +77,8 @@ interface CorralStock {
 interface Operador {
   id: string
   nombre: string
-  nivel: string
+  usuario?: string
+  rol?: string
 }
 
 export function MovimientoHaciendaModule({ operador }: { operador: Operador }) {

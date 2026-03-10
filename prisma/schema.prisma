@@ -123,6 +123,7 @@ model Cliente {
   email                               String?
   esProductor                         Boolean             @default(false)
   esUsuarioFaena                      Boolean             @default(false)
+  activo                              Boolean             @default(true)
   createdAt                           DateTime            @default(now())
   updatedAt                           DateTime
   codigoPostal                        String?

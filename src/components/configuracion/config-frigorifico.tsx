@@ -27,7 +27,8 @@ interface Configuracion {
 interface Operador {
   id: string
   nombre: string
-  nivel: string
+  usuario?: string
+  rol?: string
 }
 
 export function ConfigFrigorifico({ operador }: { operador: Operador }) {

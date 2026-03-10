@@ -49,7 +49,8 @@ interface Usuario {
 interface Operador {
   id: string
   nombre: string
-  nivel: string
+  usuario?: string
+  rol?: string
 }
 
 export function UsuariosFaenaModule({ operador }: { operador: Operador }) {

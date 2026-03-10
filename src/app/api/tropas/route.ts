@@ -21,16 +21,16 @@ export async function GET(request: NextRequest) {
     const tropas = await db.tropa.findMany({
       where,
       include: {
-        productor: true,
-        usuarioFaena: true,
-        corral: true,
-        tiposAnimales: true,
-        pesajeCamion: {
+        Cliente_Tropa_productorIdToCliente: true,
+        Cliente_Tropa_usuarioFaenaIdToCliente: true,
+        Corral: true,
+        TropaAnimalCantidad: true,
+        PesajeCamion: {
           include: {
-            transportista: true
+            Transportista: true
           }
         },
-        animales: {
+        Animal: {
           orderBy: { numero: 'asc' }
         }
       },
@@ -46,12 +46,12 @@ export async function GET(request: NextRequest) {
         numero: t.numero,
         codigo: t.codigo,
         codigoSimplificado: t.codigoSimplificado,
-        productor: t.productor,
-        usuarioFaena: t.usuarioFaena,
+        productor: t.Cliente_Tropa_productorIdToCliente,
+        usuarioFaena: t.Cliente_Tropa_usuarioFaenaIdToCliente,
         especie: t.especie,
         cantidadCabezas: t.cantidadCabezas,
         corralId: t.corralId,
-        corral: t.corral,
+        corral: t.Corral,
         estado: t.estado,
         fechaRecepcion: t.fechaRecepcion.toISOString(),
         pesoBruto: t.pesoBruto,
@@ -61,13 +61,13 @@ export async function GET(request: NextRequest) {
         dte: t.dte,
         guia: t.guia,
         observaciones: t.observaciones,
-        tiposAnimales: t.tiposAnimales,
-        pesajeCamion: t.pesajeCamion ? {
-          patenteChasis: t.pesajeCamion.patenteChasis,
-          patenteAcoplado: t.pesajeCamion.patenteAcoplado,
-          transportista: t.pesajeCamion.transportista
+        tiposAnimales: t.TropaAnimalCantidad,
+        pesajeCamion: t.PesajeCamion ? {
+          patenteChasis: t.PesajeCamion.patenteChasis,
+          patenteAcoplado: t.PesajeCamion.patenteAcoplado,
+          transportista: t.PesajeCamion.Transportista
         } : null,
-        animales: t.animales?.map(a => ({
+        animales: t.Animal?.map(a => ({
           id: a.id,
           numero: a.numero,
           codigo: a.codigo,
@@ -113,10 +113,10 @@ export async function PUT(request: NextRequest) {
       where: { id },
       data: updateData,
       include: {
-        productor: true,
-        usuarioFaena: true,
-        corral: true,
-        tiposAnimales: true
+        Cliente_Tropa_productorIdToCliente: true,
+        Cliente_Tropa_usuarioFaenaIdToCliente: true,
+        Corral: true,
+        TropaAnimalCantidad: true
       }
     })
 
@@ -126,14 +126,14 @@ export async function PUT(request: NextRequest) {
         id: tropa.id,
         numero: tropa.numero,
         codigo: tropa.codigo,
-        productor: tropa.productor,
-        usuarioFaena: tropa.usuarioFaena,
+        productor: tropa.Cliente_Tropa_productorIdToCliente,
+        usuarioFaena: tropa.Cliente_Tropa_usuarioFaenaIdToCliente,
         especie: tropa.especie,
         cantidadCabezas: tropa.cantidadCabezas,
         corralId: tropa.corralId,
-        corral: tropa.corral,
+        corral: tropa.Corral,
         estado: tropa.estado,
-        tiposAnimales: tropa.tiposAnimales
+        tiposAnimales: tropa.TropaAnimalCantidad
       }
     })
   } catch (error) {

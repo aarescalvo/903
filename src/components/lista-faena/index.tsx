@@ -56,7 +56,8 @@ interface AsignacionGarron {
 interface Operador {
   id: string
   nombre: string
-  nivel: string
+  usuario?: string
+  rol?: string
 }
 
 export function ListaFaenaModule({ operador }: { operador: Operador }) {

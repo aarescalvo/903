@@ -53,7 +53,8 @@ interface RomaneoItem {
 interface Operador {
   id: string
   nombre: string
-  nivel: string
+  usuario?: string
+  rol?: string
 }
 
 export function RomaneoModule({ operador }: { operador: Operador }) {

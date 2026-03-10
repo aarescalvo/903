@@ -323,12 +323,22 @@ export default function FrigorificoApp() {
 
   // Check for existing session
   useEffect(() => {
-    const savedOperador = localStorage.getItem('operador')
+    // Check if localStorage is available (not in sandboxed iframe)
+    let savedOperador = null
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        savedOperador = localStorage.getItem('operador')
+      }
+    } catch (e) {
+      // localStorage not available (sandboxed iframe)
+      console.log('localStorage not available')
+    }
+    
     if (savedOperador) {
       try {
         setOperador(JSON.parse(savedOperador))
       } catch {
-        localStorage.removeItem('operador')
+        // Invalid data, ignore
       }
     }
     setLoading(false)
@@ -386,7 +396,13 @@ export default function FrigorificoApp() {
       
       if (data.success) {
         setOperador(data.data)
-        localStorage.setItem('operador', JSON.stringify(data.data))
+        try {
+          if (typeof window !== 'undefined' && window.localStorage) {
+            localStorage.setItem('operador', JSON.stringify(data.data))
+          }
+        } catch {
+          // localStorage not available in sandboxed iframe
+        }
         setUsuario('')
         setPassword('')
         setPin('')
@@ -413,7 +429,13 @@ export default function FrigorificoApp() {
       }
     }
     setOperador(null)
-    localStorage.removeItem('operador')
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.removeItem('operador')
+      }
+    } catch {
+      // localStorage not available
+    }
     setCurrentPage('pesajeCamiones')
   }
 

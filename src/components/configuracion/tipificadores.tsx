@@ -24,7 +24,8 @@ interface Tipificador {
 interface Operador {
   id: string
   nombre: string
-  nivel: string
+  usuario?: string
+  rol?: string
 }
 
 export function Tipificadores({ operador }: { operador: Operador }) {

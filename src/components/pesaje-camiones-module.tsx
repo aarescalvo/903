@@ -30,7 +30,8 @@ export { TIPOS_ANIMALES, ESPECIES, TIPOS_PESAJE }
 interface Operador {
   id: string
   nombre: string
-  nivel: string
+  usuario?: string
+  rol?: string
   permisos: Record<string, boolean>
 }
 

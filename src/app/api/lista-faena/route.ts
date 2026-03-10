@@ -6,20 +6,20 @@ export async function GET(request: NextRequest) {
   try {
     const listas = await db.listaFaena.findMany({
       include: {
-        supervisor: true,
-        tropas: {
+        Operador: true,
+        ListaFaenaTropa: {
           include: {
-            tropa: {
+            Tropa: {
               include: {
-                usuarioFaena: true,
-                tiposAnimales: true
+                Cliente_Tropa_usuarioFaenaIdToCliente: true,
+                TropaAnimalCantidad: true
               }
             }
           }
         },
-        asignaciones: {
+        AsignacionGarron: {
           include: {
-            animal: {
+            Animal: {
               select: {
                 id: true,
                 codigo: true,
@@ -75,12 +75,13 @@ export async function POST(request: NextRequest) {
       data: {
         fecha: new Date(),
         estado: 'ABIERTA',
-        cantidadTotal: 0
+        cantidadTotal: 0,
+        updatedAt: new Date()
       },
       include: {
-        supervisor: true,
-        tropas: true,
-        asignaciones: true
+        Operador: true,
+        ListaFaenaTropa: true,
+        AsignacionGarron: true
       }
     })
 

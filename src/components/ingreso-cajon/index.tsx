@@ -78,7 +78,8 @@ interface HistorialItem {
 interface Operador {
   id: string
   nombre: string
-  nivel: string
+  usuario?: string
+  rol?: string
 }
 
 export function IngresoCajonModule({ operador }: { operador: Operador }) {

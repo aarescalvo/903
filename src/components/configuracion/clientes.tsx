@@ -53,7 +53,8 @@ interface ClienteItem {
 interface Operador {
   id: string
   nombre: string
-  nivel: string
+  usuario?: string
+  rol?: string
 }
 
 export function Clientes({ operador }: { operador: Operador }) {
